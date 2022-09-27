@@ -12,6 +12,18 @@ for line in file:
 
 processos = sorted(processos, key=lambda processo: processo[0]) # ordena os processos pelo momento de chegada
 
+def imprime_saida(infoProcessos, alg):
+  somaRetM = 0
+  somaResM = 0
+  somaEspM = 0
+
+  for ip, values in infoProcessos.items():
+    somaRetM += values["retorno"]
+    somaResM += values["resposta"]
+    somaEspM += values["espera"]
+
+  total = len(infoProcessos)
+  print(alg+ " %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
 
 # list_stu = [(5,'Rina'),(1,'Anish'),(3,'Moana'),(2,'cathy'),(4,'Lucy')] 
 # hq.heapify(list_stu) 
@@ -64,17 +76,7 @@ def loteria():
 
     prontos = []
     
-  somaRetM = 0
-  somaResM = 0
-  somaEspM = 0
-
-  for ip, values in infoProcessos.items():
-    somaRetM += values["retorno"]
-    somaResM += values["resposta"]
-    somaEspM += values["espera"]
-
-  total = len(infoProcessos)
-  print("LOT %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
+  imprime_saida(infoProcessos, "LOT")
 
 
 def rr():
@@ -119,16 +121,7 @@ def rr():
         if p.consumido != p.duracao: # dá mais 2 quantums ao processo
           p.quantum = 2
 
-  somaRetM = 0
-  somaResM = 0
-  somaEspM = 0
-
-  for ip, values in infoProcessos.items():
-    somaRetM += values["retorno"]
-    somaResM += values["resposta"]
-    somaEspM += values["espera"]
-
-  total = len(infoProcessos)
-  print("RR %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
+  imprime_saida(infoProcessos, "RR")
 
 loteria()
+rr()
