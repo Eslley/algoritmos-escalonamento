@@ -1,5 +1,6 @@
 import heapq as hq
 import fileinput
+from random import randint
 
 file = fileinput.input()
 
@@ -19,6 +20,63 @@ processos = sorted(processos, key=lambda processo: processo[0]) # ordena os proc
   
 # for i in list_stu: 
 #   print(i[0],':',i[1])
+
+def loteria():
+  class Processo:
+
+    def __init__(self, chegada, duracao):
+      self.chegada = chegada
+      self.duracao = duracao
+      self.consumido = 0
+
+  infoProcessos = {}  
+  lista = []
+
+  for i in range(0, len(processos)): # insere os processos na lista
+    p = Processo(processos[i][0], processos[i][1])
+    infoProcessos[p] = {"retorno": 0, "resposta": 0, "espera": 0}
+    lista.append(p)
+
+  TEMPO = 0
+  prontos = []
+
+  while len(lista) != 0: # enquanto existirem processos na fila
+
+    for p in lista: # seleciona os processos em estado pronto
+      if p.chegada <= TEMPO:
+        prontos.append(p)
+
+    sorteado = randint(0, len(prontos) - 1)
+
+    processo = prontos[sorteado]
+
+    if processo.consumido == 0: # salva o tempo da primeira resposta para o atual processo
+          infoProcessos[p]["resposta"] = TEMPO - p.chegada
+
+    TEMPO += 1
+    processo.consumido += 1
+
+    if processo.consumido == processo.duracao:
+      retorno = TEMPO - p.chegada
+      infoProcessos[p]["retorno"] = retorno
+      infoProcessos[p]["espera"] = retorno - p.duracao
+      lista.remove(processo)
+
+    prontos = []
+    
+  somaRetM = 0
+  somaResM = 0
+  somaEspM = 0
+
+  for ip, values in infoProcessos.items():
+    somaRetM += values["retorno"]
+    somaResM += values["resposta"]
+    somaEspM += values["espera"]
+
+  total = len(infoProcessos)
+  print("LOT %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
+
+
 def rr():
   class Processo:
 
@@ -31,14 +89,14 @@ def rr():
   infoProcessos = {}
   lista = []
 
-  for i in range(0, len(processos)): # insere os processos na lista circular
+  for i in range(0, len(processos)): # insere os processos na lista
     p = Processo(processos[i][0], processos[i][1])
     infoProcessos[p] = {"retorno": 0, "resposta": 0, "espera": 0}
     lista.append(p)
 
   TEMPO = 0
 
-  while len(lista) != 0: # enquanto exixtirem processos na fila
+  while len(lista) != 0: # enquanto existirem processos na fila
 
     for p in lista.copy():
 
@@ -73,4 +131,4 @@ def rr():
   total = len(infoProcessos)
   print("RR %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
 
-rr()
+loteria()
