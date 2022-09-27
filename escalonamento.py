@@ -3,6 +3,22 @@ import fileinput
 
 file = fileinput.input()
 
+processos = []
+
+for line in file:
+  p = line.rstrip().split(" ")
+  processos.append((int(p[0]), int(p[1]))) # para cada processo escreve a tupla ('chegada', 'duracao')
+
+processos = sorted(processos, key=lambda processo: processo[0]) # ordena os processos pelo momento de chegada
+
+
+# list_stu = [(5,'Rina'),(1,'Anish'),(3,'Moana'),(2,'cathy'),(4,'Lucy')] 
+# hq.heapify(list_stu) 
+  
+# print("The order of presentation is :") 
+  
+# for i in list_stu: 
+#   print(i[0],':',i[1])
 def rr():
   class Processo:
 
@@ -12,15 +28,7 @@ def rr():
       self.consumido = 0
       self.quantum = 2
 
-  processos = []
   infoProcessos = {}
-
-  for line in file:
-    p = line.rstrip().split(" ")
-    processos.append((int(p[0]), int(p[1]))) # para cada processo escreve a tupla ('chegada', 'duracao')
-
-  processos = sorted(processos, key=lambda processo: processo[0]) # ordena os processos pelo momento de chegada
-
   lista = []
 
   for i in range(0, len(processos)): # insere os processos na lista circular
