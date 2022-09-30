@@ -1,4 +1,3 @@
-import heapq as hq
 import fileinput
 from random import randint
 
@@ -34,16 +33,54 @@ def imprime_saida(infoProcessos, alg):
   total = len(infoProcessos)
   print(alg+ " %.2f %.2f %.2f" % (somaRetM/total, somaResM/total, somaEspM/total))
 
-# list_stu = [(5,'Rina'),(1,'Anish'),(3,'Moana'),(2,'cathy'),(4,'Lucy')] 
-# hq.heapify(list_stu) 
-  
-# print("The order of presentation is :") 
-  
-# for i in list_stu: 
-#   print(i[0],':',i[1])]
-
 def pd():
-  pass
+  infoProcessos = {}  
+  lista = []
+
+  for i in range(0, len(processos)): # insere os processos na lista
+    p = Processo(processos[i][0], processos[i][1])
+    infoProcessos[p] = {"retorno": 0, "resposta": 0, "espera": 0}
+    p.prioridade = len(processos)
+    lista.append(p)
+
+  TEMPO = 0
+  prontos = []
+  escolhido: Processo = None
+
+  while len(lista) != 0:
+
+    for p in lista: # seleciona os processos em estado pronto
+      if p.chegada <= TEMPO:
+        prontos.append(p)
+
+    maiorPrioridade = -999999
+    for p in prontos: # encontra a maior prioridade
+      if p.prioridade > maiorPrioridade:
+        if maiorPrioridade != p.prioridade: # para selecionar apenas o primeiro processo com a maior prioridade encontrada
+          escolhido = p
+        maiorPrioridade = p.prioridade
+
+    if escolhido.consumido == 0: # salva o tempo da primeira resposta para o atual processo
+      infoProcessos[escolhido]["resposta"] = TEMPO - escolhido.chegada
+
+    TEMPO += 1
+    escolhido.consumido += 1
+    escolhido.prioridade -= 1
+    
+    if escolhido.consumido == escolhido.duracao:
+      retorno = TEMPO - escolhido.chegada
+      infoProcessos[escolhido]["retorno"] = retorno
+      infoProcessos[escolhido]["espera"] = retorno - escolhido.duracao
+      lista.remove(escolhido)
+
+    for p in prontos:
+      if p != escolhido: # incrementa a prioridade dos processos que não estão executando
+          p.prioridade += 1
+
+    prontos = []
+
+  imprime_saida(infoProcessos, "PRI")
+    
 
 def loteria():
   infoProcessos = {}  
@@ -68,7 +105,7 @@ def loteria():
     processo = prontos[sorteado]
 
     if processo.consumido == 0: # salva o tempo da primeira resposta para o atual processo
-          infoProcessos[p]["resposta"] = TEMPO - p.chegada
+      infoProcessos[p]["resposta"] = TEMPO - p.chegada
 
     TEMPO += 1
     processo.consumido += 1
@@ -120,5 +157,6 @@ def rr():
 
   imprime_saida(infoProcessos, "RR")
 
+pd()
 loteria()
 rr()
