@@ -2,6 +2,15 @@ import heapq as hq
 import fileinput
 from random import randint
 
+class Processo:
+
+    def __init__(self, chegada, duracao):
+      self.chegada = chegada
+      self.duracao = duracao
+      self.consumido = 0
+      self.quantum = 2
+      self.prioridade = 0
+
 file = fileinput.input()
 
 processos = []
@@ -31,16 +40,12 @@ def imprime_saida(infoProcessos, alg):
 # print("The order of presentation is :") 
   
 # for i in list_stu: 
-#   print(i[0],':',i[1])
+#   print(i[0],':',i[1])]
+
+def pd():
+  pass
 
 def loteria():
-  class Processo:
-
-    def __init__(self, chegada, duracao):
-      self.chegada = chegada
-      self.duracao = duracao
-      self.consumido = 0
-
   infoProcessos = {}  
   lista = []
 
@@ -80,14 +85,6 @@ def loteria():
 
 
 def rr():
-  class Processo:
-
-    def __init__(self, chegada, duracao):
-      self.chegada = chegada
-      self.duracao = duracao
-      self.consumido = 0
-      self.quantum = 2
-
   infoProcessos = {}
   lista = []
 
